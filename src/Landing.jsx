@@ -1,7 +1,11 @@
 import React, { useRef, useState } from "react";
 import publicAsset from "./publicAsset.js";
 import LaserFlow from "./components/LaserFlow.jsx";
-import ScrollStack, { ScrollStackItem } from "./components/ScrollStack.jsx";
+import AnimatedFooter from "./components/AnimatedFooter.jsx";
+import CircularGallery from "./components/CircularGallery.jsx";
+import ExpandableBentoGrid from "./components/ExpandableBentoGrid.jsx";
+import FaqAccordion from "./components/FaqAccordion.jsx";
+import PricingTiers from "./components/PricingTiers.jsx";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -13,13 +17,14 @@ import {
   Wallet,
   TrendingUp,
   Send,
-  Plus,
   Signal,
   BatteryFull,
   Sparkles,
   ArrowDownLeft,
 } from "lucide-react";
 import { gsap, ScrollTrigger, useGSAP } from "./motion.js";
+
+const SoftwareBento = React.lazy(() => import("./components/SoftwareBento.jsx"));
 
 const brands = {
   WhatsApp: "whatsapp",
@@ -136,40 +141,43 @@ const steps = [
   },
 ];
 
-const careSteps = [
+const storyGalleryItems = [
   {
-    number: "01",
-    kicker: "IMERSÃO NA ROTINA",
-    title: "Uma boa conversa",
-    text: "Conhecemos seu momento, suas ferramentas e o que precisa melhorar.",
     image: publicAsset("images/shop-owner.jpg"),
-    alt: "Comerciante sorrindo em sua banca de frutas",
-    caption: "A rotina começa por quem empreende",
+    text: "Quem empreende",
+    description: "Por trás de cada número, tem alguém fazendo acontecer.",
   },
   {
-    number: "02",
-    kicker: "CONFIGURAÇÃO SOB MEDIDA",
-    title: "Conexões bem feitas",
-    text: "Definimos os canais, as rotinas financeiras e as regras de cada agente.",
     image: publicAsset("images/coffee-shop-jpg.jpg"),
-    alt: "Barista prepara uma bebida junto à máquina de café",
-    caption: "Ferramentas que trabalham em sintonia",
+    text: "Rotina em movimento",
+    description: "Uma operação organizada abre espaço para o próximo passo.",
   },
   {
-    number: "03",
-    kicker: "ACOMPANHAMENTO CONTÍNUO",
-    title: "Cuidado que continua",
-    text: "Seu time acompanha, revisa e ajusta a operação junto com a Nexo.",
+    image: publicAsset("images/coffee-interior-jpg.jpg"),
+    text: "Um negócio com ritmo",
+    description: "A clareza acompanha o dia a dia de cada negócio.",
+  },
+  {
+    image: publicAsset("images/facade.jpg"),
+    text: "Estrutura para crescer",
+    description: "Boas conexões ajudam a sustentar novas possibilidades.",
+  },
+  {
+    image: publicAsset("images/architecture.jpg"),
+    text: "Novos caminhos",
+    description: "Uma visão ampla ajuda a escolher a direção.",
+  },
+  {
+    image: publicAsset("images/sao-paulo-skyline.jpg"),
+    text: "Visão de futuro",
+    description: "Mais clareza para planejar o que vem pela frente.",
+  },
+  {
     image: publicAsset("images/sao-paulo-brazil-skyline-aerial-december-2024.jpg"),
-    alt: "Vista aérea do horizonte de São Paulo",
-    caption: "Clareza para seguir em frente",
+    text: "O ritmo da cidade",
+    description: "Cada negócio cresce no seu próprio compasso.",
   },
 ];
-
-const careRoute =
-  "M700 36 C702 130 766 174 780 264 C794 348 784 412 760 476 C740 532 756 576 816 595 C900 627 1128 632 1366 620 C1400 618 1412 634 1406 654 C1402 670 1372 683 1368 710 C1365 756 1382 800 1350 832 C1328 850 1284 850 1230 844 C1050 836 847 852 650 842 C430 831 250 861 76 836";
-const careMobileRoute =
-  "M203 52 C198 122 208 162 203 230 C198 298 208 365 203 434 C198 503 208 570 203 638 C198 706 208 773 203 848";
 
 function AgentJourney({ openChat }) {
   const [active, setActive] = useState(0);
@@ -360,74 +368,6 @@ function AgentJourney({ openChat }) {
   );
 }
 
-function CareSequence() {
-  return (
-    <div className="care-sequence" data-care-sequence>
-      <div className="care-stage" data-care-stage>
-        <div className="care-stage-label" aria-hidden="true">
-          <span>JORNADA NEXO</span>
-          <span>03 ETAPAS · UM SÓ CONTEXTO</span>
-        </div>
-        <svg
-          className="care-route care-route--desktop"
-          viewBox="0 0 1440 900"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path className="care-route-track" d={careRoute} />
-          <path className="care-route-glow" d={careRoute} />
-          <path className="care-route-light" d={careRoute} />
-        </svg>
-        <svg
-          className="care-route care-route--mobile"
-          viewBox="0 0 390 900"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path className="care-route-track" d={careMobileRoute} />
-          <path className="care-route-glow" d={careMobileRoute} />
-          <path className="care-route-light" d={careMobileRoute} />
-        </svg>
-        <ol className="care-steps" aria-label="Etapas de implantação da Nexo">
-          {careSteps.map((step, index) => (
-            <li
-              className={`care-step care-step--${index + 1}`}
-              data-care-step
-              key={step.number}
-            >
-              <div className="care-step-copy">
-                <span className="care-step-number" aria-hidden="true">
-                  {step.number}
-                </span>
-                <span className="care-step-kicker">{step.kicker}</span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
-              <figure className="care-step-media">
-                <img
-                  src={step.image}
-                  alt={step.alt}
-                  width="960"
-                  height="640"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <figcaption>{step.caption}</figcaption>
-              </figure>
-            </li>
-          ))}
-        </ol>
-        <div className="care-scroll-hint" aria-hidden="true">
-          <span>ROLE PARA ACOMPANHAR</span>
-          <ArrowDown size={15} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Landing({
   Dashboard,
   openChat,
@@ -438,6 +378,101 @@ export default function Landing({
 }) {
   const pageRef = useRef(null);
   const dashboardSurfaceRef = useRef(null);
+  const [activeStoryItem, setActiveStoryItem] = useState(0);
+  const [footerRevealed, setFooterRevealed] = useState(false);
+  const storyHighlights = [
+    {
+      id: "cash",
+      className: "story-cash",
+      icon: <Wallet size={20} />,
+      subtitle: "Fluxo de caixa",
+      title: "Mais clareza.\nMenos susto.",
+      description:
+        "Uma leitura organizada das movimentações ajuda você a antecipar decisões e cuidar do caixa com mais confiança.",
+      preview: (
+        <>
+          <div className="cash-bars" aria-hidden="true">
+            {Array.from({ length: 7 }, (_, index) => <i key={index} />)}
+          </div>
+          <span className="story-card-foot">
+            Uma visão pronta para o próximo passo <ArrowUpRight size={17} />
+          </span>
+        </>
+      ),
+      content: (
+        <>
+          <p>
+            O acompanhamento financeiro aproxima os dados do dia a dia das
+            decisões que movem o negócio.
+          </p>
+          <ul>
+            <li>Entradas, saídas e compromissos organizados em um só lugar.</li>
+            <li>Leitura clara do que aconteceu e do que vem pela frente.</li>
+            <li>Relatórios preparados para apoiar conversas e decisões.</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      id: "agents",
+      className: "story-agent",
+      icon: <Sparkles size={20} />,
+      subtitle: "Seu time inteligente",
+      title: "3 agentes.\nUm só contexto.",
+      description:
+        "Agentes de IA apoiam o atendimento e as vendas, compartilhando contexto para cada conversa continuar de onde parou.",
+      preview: (
+        <div className="agent-pills">
+          <span>Lia</span>
+          <span>Leo</span>
+          <span>Nina</span>
+        </div>
+      ),
+      content: (
+        <>
+          <p>
+            Cada agente tem uma função definida pela sua equipe e trabalha com
+            as informações certas para aquele momento.
+          </p>
+          <ul>
+            <li><strong>Lia</strong> acolhe e orienta quem chega.</li>
+            <li><strong>Leo</strong> organiza oportunidades e próximos passos.</li>
+            <li><strong>Nina</strong> transforma os números em uma leitura simples.</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      id: "channels",
+      className: "story-connect",
+      icon: <ArrowDownLeft size={20} />,
+      subtitle: "Canais conectados",
+      title: "A conversa segue\ncom você.",
+      description:
+        "Os canais digitais podem se conectar à operação para sua equipe acompanhar o histórico e dar continuidade ao atendimento.",
+      preview: (
+        <div className="story-logos" aria-label="Exemplos de canais integrados">
+          <Brand name="WhatsApp" />
+          <Brand name="Instagram" />
+          <Brand name="CRM" />
+          <Brand name="E-mail" />
+        </div>
+      ),
+      content: (
+        <>
+          <p>
+            Reúna os principais pontos de contato em fluxos pensados para a
+            rotina da sua equipe.
+          </p>
+          <ul>
+            <li>WhatsApp e Instagram para conversas com clientes.</li>
+            <li>CRM para acompanhar oportunidades e histórico.</li>
+            <li>E-mail integrado ao contexto da operação.</li>
+          </ul>
+        </>
+      ),
+    },
+  ];
   useGSAP(
     () => {
       const media = gsap.matchMedia();
@@ -483,194 +518,7 @@ export default function Landing({
             );
           });
 
-        const stackWindow = pageRef.current.querySelector(
-          ".stack-gallery-window",
-        );
-        const stackScroller = stackWindow?.querySelector(
-          ".scroll-stack--contained",
-        );
-        if (stackWindow && stackScroller) {
-          const getStackRange = () =>
-            Math.max(0, stackScroller.scrollHeight - stackScroller.clientHeight);
-          const syncStack = (trigger) => {
-            stackScroller.scrollTop = getStackRange() * trigger.progress;
-          };
-
-          ScrollTrigger.create({
-            trigger: stackWindow,
-            start: "top 15%",
-            end: () => `+=${Math.max(1, getStackRange())}`,
-            pin: stackWindow,
-            pinSpacing: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onUpdate: syncStack,
-            onRefresh: syncStack,
-          });
-
-          const refreshFrame = requestAnimationFrame(() =>
-            ScrollTrigger.refresh(),
-          );
-          return () => cancelAnimationFrame(refreshFrame);
-        }
       });
-      media.add(
-        "(min-width: 900px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          const sequence = pageRef.current.querySelector("[data-care-sequence]");
-          const stage = sequence?.querySelector("[data-care-stage]");
-          const route = stage?.querySelectorAll(
-            ".care-route--desktop .care-route-glow, .care-route--desktop .care-route-light",
-          );
-          const careSteps = stage?.querySelectorAll("[data-care-step]");
-          if (!sequence || !stage || !route?.length || careSteps?.length !== 3)
-            return;
-
-          route.forEach((path) => {
-            const length = path.getTotalLength();
-            gsap.set(path, {
-              strokeDasharray: length,
-              strokeDashoffset: length,
-            });
-          });
-          careSteps.forEach((step, index) => {
-            gsap.set(step.querySelector(".care-step-copy"), {
-              autoAlpha: index === 0 ? 1 : 0.58,
-              y: index === 0 ? 0 : 12,
-            });
-            gsap.set(step.querySelector(".care-step-number"), {
-              autoAlpha: index === 0 ? 1 : 0.55,
-              scale: index === 0 ? 1 : 0.94,
-            });
-            gsap.set(step.querySelector(".care-step-media"), {
-              autoAlpha: 0,
-              scale: 0.96,
-              clipPath: "inset(9% round 20px)",
-            });
-          });
-
-          const scrollUnits = 3.22;
-          const timeline = gsap.timeline({
-            scrollTrigger: {
-              trigger: stage,
-              start: "top top",
-              end: () => `+=${Math.round(window.innerHeight * scrollUnits)}`,
-              pin: stage,
-              pinSpacing: true,
-              scrub: true,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-            },
-          });
-          timeline.to(route, {
-            strokeDashoffset: 0,
-            duration: scrollUnits,
-            ease: "none",
-          }, 0);
-
-          careSteps.forEach((step, index) => {
-            const copy = step.querySelector(".care-step-copy");
-            const number = step.querySelector(".care-step-number");
-            const photo = step.querySelector(".care-step-media");
-            const copyAt = [0, 1.32, 2.62][index];
-            const photoAt = [1.02, 1.58, 2.72][index];
-
-            if (index > 0) {
-              timeline.to(copy, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.34,
-                ease: "none",
-              }, copyAt);
-              timeline.to(number, {
-                autoAlpha: 1,
-                scale: 1,
-                duration: 0.28,
-                ease: "none",
-              }, copyAt + 0.08);
-            }
-
-            timeline.to(photo, {
-              autoAlpha: 1,
-              scale: 1,
-              clipPath: "inset(0% round 20px)",
-              duration: 0.5,
-              ease: "none",
-            }, photoAt);
-          });
-
-          const refreshFrame = requestAnimationFrame(() =>
-            ScrollTrigger.refresh(),
-          );
-          return () => cancelAnimationFrame(refreshFrame);
-        },
-      );
-      media.add(
-        "(max-width: 899px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          const sequence = pageRef.current.querySelector("[data-care-sequence]");
-          const stage = sequence?.querySelector("[data-care-stage]");
-          const route = stage?.querySelectorAll(
-            ".care-route--mobile .care-route-glow, .care-route--mobile .care-route-light",
-          );
-          const careSteps = stage?.querySelectorAll("[data-care-step]");
-          if (!sequence || !stage || !route?.length || !careSteps?.length) return;
-
-          route.forEach((path) => {
-            const length = path.getTotalLength();
-            gsap.set(path, {
-              strokeDasharray: length,
-              strokeDashoffset: length,
-            });
-          });
-          gsap.to(route, {
-            strokeDashoffset: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: sequence,
-              start: "top 78%",
-              end: "bottom 32%",
-            scrub: true,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          careSteps.forEach((step) => {
-            const copy = step.querySelector(".care-step-copy");
-            const number = step.querySelector(".care-step-number");
-            const photo = step.querySelector(".care-step-media");
-            gsap.set([copy, number, photo], { autoAlpha: 0.55 });
-            gsap.set(photo, {
-              scale: 0.96,
-              clipPath: "inset(8% round 16px)",
-            });
-            gsap.to([copy, number], {
-              autoAlpha: 1,
-              y: 0,
-              scale: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: step,
-                start: "top 76%",
-                end: "center 58%",
-                scrub: true,
-              },
-            });
-            gsap.to(photo, {
-              autoAlpha: 1,
-              scale: 1,
-              clipPath: "inset(0% round 16px)",
-              ease: "none",
-              scrollTrigger: {
-                trigger: step,
-                start: "top 70%",
-                end: "center 55%",
-                scrub: true,
-              },
-            });
-          });
-        },
-      );
       return () => media.revert();
     },
     { scope: pageRef },
@@ -694,7 +542,7 @@ export default function Landing({
             fog={0.2}
             dust={1.6}
             speed={0.8}
-            revealImage={publicAsset("images/coffee-shop-jpg.jpg")}
+            revealImage={publicAsset("images/architecture.jpg")}
             revealRadius={220}
             revealOpacity={0.6}
             theme="dark"
@@ -747,71 +595,25 @@ export default function Landing({
         <AgentJourney openChat={openChat} />
         <section className="stack-gallery" aria-labelledby="stack-gallery-title">
           <div className="stack-gallery-heading section" data-reveal>
-            <span className="eyebrow">O negócio por trás dos números</span>
+            <span className="eyebrow">TECNOLOGIA DESENVOLVIDA PELA EQUIPE NEXO</span>
             <h2 id="stack-gallery-title">
               Financeiro que entende
               <br />
               <em>o seu ritmo.</em>
             </h2>
             <p>
-              Cada operação tem seu próprio passo. Role pelas histórias que
-              inspiram uma gestão mais clara e próxima de quem empreende.
+              Da arquitetura dos dados às interfaces e integrações, nossa equipe
+              de software cria e acompanha cada camada da plataforma. Tecnologia
+              moldada à rotina financeira de cada negócio.
             </p>
           </div>
-          <div className="stack-gallery-window section">
-            <ScrollStack smoothScroll={false}>
-              <ScrollStackItem itemClassName="nexo-scroll-card">
-                <img
-                  src={publicAsset("images/shop-owner.jpg")}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="nexo-scroll-card-copy">
-                  <span>01 / Quem empreende</span>
-                  <h3>Todo negócio tem uma história que merece fôlego.</h3>
-                  <p>
-                    Organização financeira devolve clareza para cuidar do que
-                    faz a empresa crescer.
-                  </p>
-                </div>
-              </ScrollStackItem>
-              <ScrollStackItem itemClassName="nexo-scroll-card">
-                <img
-                  src={publicAsset("images/coffee-interior-jpg.jpg")}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="nexo-scroll-card-copy">
-                  <span>02 / Rotina financeira</span>
-                  <h3>Entradas, saídas e decisões no mesmo ritmo.</h3>
-                  <p>
-                    Uma visão simples transforma a rotina da operação em
-                    próximos passos possíveis.
-                  </p>
-                </div>
-              </ScrollStackItem>
-              <ScrollStackItem itemClassName="nexo-scroll-card">
-                <img
-                  src={publicAsset("images/sao-paulo-skyline.jpg")}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="nexo-scroll-card-copy">
-                  <span>03 / Próximos passos</span>
-                  <h3>Mais clareza para crescer com confiança.</h3>
-                  <p>
-                    Com os números organizados, sobra espaço para planejar o
-                    que vem pela frente.
-                  </p>
-                </div>
-              </ScrollStackItem>
-            </ScrollStack>
+          <div className="section software-bento-stage" data-reveal>
+            <React.Suspense fallback={null}>
+              <SoftwareBento />
+            </React.Suspense>
           </div>
-          <p className="stack-gallery-note section">
-            Imagens ilustrativas. Nenhuma imagem representa cliente da Nexo.
+          <p className="software-bento-note section">
+            Demonstração conceitual da arquitetura e dos fluxos de software.
           </p>
         </section>
         <div className="section section-rule" aria-hidden="true">
@@ -869,99 +671,31 @@ export default function Landing({
               ritmo do seu negócio.
             </p>
           </div>
-          <div className="story-grid">
-            <article className="story-photo" data-reveal="product">
-              <img
-                src={publicAsset("images/shop-owner.jpg")}
-                width="1920"
-                height="1280"
-                alt="Vendedor de frutas em sua banca, cercado por abacaxis e bananas"
-                loading="lazy"
-                decoding="async"
+          <div className="story-gallery" data-reveal="product">
+            <div className="story-gallery-viewport">
+              <CircularGallery
+                items={storyGalleryItems}
+                bend={3}
+                textColor="#f3f5fb"
+                borderRadius={0.05}
+                font="700 18px Manrope Variable"
+                scrollEase={0.05}
+                enableWheel={false}
+                autoScroll={0.5}
+                onItemClick={(item, index) => setActiveStoryItem(index)}
+                onActiveChange={setActiveStoryItem}
+                aria-label="Histórias de negócios e gestão financeira"
               />
-              <div className="story-photo-shade" />
-              <div className="story-photo-copy">
-                <span>Por trás de cada número</span>
-                <h3>tem alguém fazendo acontecer.</h3>
-              </div>
-              <span className="photo-caption">
-                Pequenos negócios, grandes histórias
+            </div>
+            <div className="story-gallery-meta" aria-live="polite">
+              <span className="story-gallery-index">
+                {String(activeStoryItem + 1).padStart(2, "0")} / {String(storyGalleryItems.length).padStart(2, "0")}
               </span>
-            </article>
-            <article className="story-card story-cash" data-reveal>
-              <span className="story-card-icon">
-                <Wallet size={20} />
-              </span>
-              <small>Fluxo de caixa</small>
-              <strong>
-                Mais clareza.
-                <br />
-                Menos susto.
-              </strong>
-              <div className="cash-bars" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-              </div>
-              <span className="story-card-foot">
-                Uma visão pronta para o próximo passo <ArrowUpRight size={17} />
-              </span>
-            </article>
-            <article className="story-card story-agent" data-reveal>
-              <span className="story-card-icon">
-                <Sparkles size={20} />
-              </span>
-              <small>Seu time inteligente</small>
-              <strong>
-                3 agentes.
-                <br />
-                Um só contexto.
-              </strong>
-              <div className="agent-pills">
-                <span>Lia</span>
-                <span>Leo</span>
-                <span>Nina</span>
-              </div>
-            </article>
-            <article className="story-card story-connect" data-reveal>
-              <span className="story-card-icon">
-                <ArrowDownLeft size={20} />
-              </span>
-              <small>Canais conectados</small>
-              <strong>
-                A conversa segue
-                <br />
-                com você.
-              </strong>
-              <div
-                className="story-logos"
-                aria-label="Exemplos de canais integrados"
-              >
-                <Brand name="WhatsApp" />
-                <Brand name="Instagram" />
-                <Brand name="CRM" />
-                <Brand name="E-mail" />
-              </div>
-            </article>
-            <article className="story-card story-people" data-reveal="product">
-              <img
-                src={publicAsset("images/coffee-shop-jpg.jpg")}
-                width="1920"
-                height="1280"
-                alt="Barista preparando uma bebida em uma máquina de café"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="story-people-overlay">
-                <span>Mais tempo para</span>
-                <strong>cuidar do que vem pela frente.</strong>
-              </div>
-            </article>
+              <span>{storyGalleryItems[activeStoryItem]?.text}</span>
+              <small>Arraste para explorar · clique em uma imagem para ampliar</small>
+            </div>
           </div>
+          <ExpandableBentoGrid items={storyHighlights} onAction={openDemo} />
           <p className="story-disclaimer">
             Composição ilustrativa. Indicadores e fluxos são exemplos, sem dados
             de clientes reais.
@@ -1024,57 +758,34 @@ export default function Landing({
           </div>
         </section>
         <section className="care section" id="como-funciona">
-          <header className="care-heading">
-            <span className="care-heading-label">UMA PARCERIA FEITA PARA A SUA ROTINA</span>
-            <h2 data-reveal>
-              Começa com
-              <br />o seu negócio.
-            </h2>
-            <p data-reveal>
-              Antes da tecnologia, a gente entende a sua rotina. Depois, conecta
-              as pessoas, os números e as ferramentas que fazem tudo seguir.
-            </p>
-          </header>
-          <CareSequence />
-          <div className="care-cta">
-            <button className="text-action" onClick={openDemo}>
-              Preparar minha conversa <ArrowUpRight size={18} />
-            </button>
-          </div>
+          <PricingTiers onContact={openDemo} />
         </section>
         <section className="faq section" id="duvidas">
-          <h2 data-reveal>
+          <h2 id="faq-title" data-reveal>
             Vamos deixar
             <br /> tudo claro.
           </h2>
-          <div>
-            {[
-              [
-                "A Nexo cuida de quais partes do financeiro?",
-                "A proposta reúne contas a pagar e receber, organização do fluxo de caixa e acompanhamento dos resultados. O escopo é definido de acordo com a rotina da sua empresa.",
-              ],
-              [
-                "A IA toma decisões financeiras por mim?",
-                "Não. Os agentes ajudam a organizar informações e sugerir próximos passos. Decisões e movimentações dependem da revisão e autorização das pessoas responsáveis.",
-              ],
-              [
-                "Preciso trocar as ferramentas que já uso?",
-                "As conexões são avaliadas a partir das ferramentas da sua empresa, suas permissões e as integrações disponíveis.",
-              ],
-              [
-                "Posso experimentar os agentes por aqui?",
-                "Sim. O dashboard e o chat desta página são demonstrações interativas com dados ilustrativos. Nenhuma conta é conectada e nenhuma mensagem externa é enviada.",
-              ],
-            ].map(([q, a]) => (
-              <details key={q}>
-                <summary>
-                  {q}
-                  <Plus size={19} />
-                </summary>
-                <p>{a}</p>
-              </details>
-            ))}
-          </div>
+          <FaqAccordion
+            aria-label="Perguntas frequentes sobre a Nexo"
+            items={[
+              {
+                question: "A Nexo cuida de quais partes do financeiro?",
+                answer: "A proposta reúne contas a pagar e receber, organização do fluxo de caixa e acompanhamento dos resultados. O escopo é definido de acordo com a rotina da sua empresa.",
+              },
+              {
+                question: "A IA toma decisões financeiras por mim?",
+                answer: "Não. Os agentes ajudam a organizar informações e sugerir próximos passos. Decisões e movimentações dependem da revisão e autorização das pessoas responsáveis.",
+              },
+              {
+                question: "Preciso trocar as ferramentas que já uso?",
+                answer: "As conexões são avaliadas a partir das ferramentas da sua empresa, suas permissões e as integrações disponíveis.",
+              },
+              {
+                question: "Posso experimentar os agentes por aqui?",
+                answer: "Sim. O dashboard e o chat desta página são demonstrações interativas com dados ilustrativos. Nenhuma conta é conectada e nenhuma mensagem externa é enviada.",
+              },
+            ]}
+          />
         </section>
         <section className="closing">
           <img
@@ -1103,8 +814,24 @@ export default function Landing({
           </div>
         </section>
       </main>
-      <footer className="site-footer">
-        <div className="footer-inner section">
+      <footer className="site-footer" data-revealed={footerRevealed ? "true" : "false"}>
+        <AnimatedFooter
+          leftImage={publicAsset("images/shop-owner.jpg")}
+          rightImage={publicAsset("images/architecture.jpg")}
+          columns={52}
+          cellSize={11}
+          fontSize={9}
+          parallaxStrength={11}
+          charColor="#aebaff"
+          hoverColor="#6576f0"
+          hoverCharColor="#ffffff"
+          onRevealChange={setFooterRevealed}
+        />
+        <div
+          className="footer-inner section"
+          aria-hidden={!footerRevealed}
+          inert={!footerRevealed}
+        >
           <div className="footer-top">
             <div className="footer-brand">
               <a
