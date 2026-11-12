@@ -684,11 +684,11 @@ export const LaserFlow = ({
       let beamX = s.beamPosition * width;
       if (surface.real) {
         const margin = surface.radius + 6;
-        if (beamX >= surface.left && beamX <= surface.right) {
-          beamX = clamp(beamX, surface.left + margin, surface.right - margin);
-        } else {
-          surface = { left: -width * 2, top: height, right: width * 3, bottom: height * 3, radius: 0, real: false };
-        }
+        // Keep the beam anchored to its target surface as the viewport changes.
+        // A canvas-relative X can drift outside a centered, max-width dashboard
+        // on ultrawide screens, so resolve the fraction within the measured card.
+        beamX = surface.left + s.beamPosition * (surface.right - surface.left);
+        beamX = clamp(beamX, surface.left + margin, surface.right - margin);
       }
       const startY = -0.15 * height;
       const targetFront = surface.top + s.beamLift * height;
